@@ -16,7 +16,7 @@ namespace WordCheatTest
 		private bool[,] availabillityMap;
 
 		private List<string> words;
-		private string[] dictionary;
+		private List<string> dictionary = new List<string>();
 
 		public WordFinder()
 		{
@@ -65,12 +65,17 @@ namespace WordCheatTest
 
 		private void LoadDictionaryFromFile()
 		{
-			dictionary = File.ReadAllLines("..\\..\\Dictionary.txt");
-			for(int i = 0; i < dictionary.Length; i++)
+			string[] contents = File.ReadAllLines("..\\..\\Dictionary.txt");
+			for(int i = 0; i < contents.Length; i++)
 			{
-				dictionary[i] = dictionary[i].ToLower();
+				if(contents[i].Length > 2 && contents[i].Length < 10)
+				{
+					dictionary.Add(contents[i].ToLower());
+				}
+				
 			}
-			Console.WriteLine("Dictionary initialized.");
+
+			Console.WriteLine("Dictionary initialized with " + dictionary.Count + " words inside.");
 		}
 
 		private void InitializeAvailabillityMap()
