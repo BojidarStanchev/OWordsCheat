@@ -83,7 +83,7 @@ namespace WordCheatTest
 
 		private bool IsWord(string str)
 		{
-			return dictionary.Contains(str);
+			return dictionary.Contains(str) && (str.Length > 2);
 		}
 
 		private void SortWords()
