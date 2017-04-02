@@ -66,6 +66,11 @@ namespace WordCheatTest
 		private void LoadDictionaryFromFile()
 		{
 			dictionary = File.ReadAllLines("..\\..\\Dictionary.txt");
+			for(int i = 0; i < dictionary.Length; i++)
+			{
+				dictionary[i] = dictionary[i].ToLower();
+			}
+			Console.WriteLine("Dictionary initialized.");
 		}
 
 		private void InitializeAvailabillityMap()
