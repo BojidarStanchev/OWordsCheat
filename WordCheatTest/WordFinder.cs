@@ -1,27 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace WordCheatTest
 {
 		class WordFinder
 		{
-		private char[,] matrix;
+		public char[,] Matrix
+		{
+			get;
+			set;
+		}
+
 		private bool[,] availabillityMap;
 
-		private List<string> words = new List<string>();
+		private List<string> words;
 		private string[] dictionary;
 
-		public WordFinder(char[,] matrix)
+		public WordFinder()
 		{
-			this.matrix = matrix;
-			PrintMatrix(matrix);
 			LoadDictionaryFromFile();
+		}
+	
+		public void Search(char[,] matrix)
+		{
+			Matrix = matrix;
+			words = new List<string>();
+			PrintMatrix(Matrix);
 			InitializeAvailabillityMap();
-			Search();
+
+			for(int i = 0; i < Matrix.GetLength(0); i++)
+			{
+				for(int j = 0; j < Matrix.GetLength(1); j++)
+				{
+					Search(i, j);
+				}
+			}
+
 			SortWords();
 			PrintWords();
 		}
@@ -38,6 +54,7 @@ namespace WordCheatTest
 			}
 		}
 
+
 		private void PrintWords()
 		{
 			for(int i = 0; i < words.Count; i++)
@@ -53,11 +70,11 @@ namespace WordCheatTest
 
 		private void InitializeAvailabillityMap()
 		{
-			availabillityMap = new bool[matrix.GetLength(0), matrix.GetLength(1)];
+			availabillityMap = new bool[Matrix.GetLength(0), Matrix.GetLength(1)];
 
-			for(int i = 0; i < matrix.GetLength(0); i++)
+			for(int i = 0; i < Matrix.GetLength(0); i++)
 			{
-				for (int j = 0; j < matrix.GetLength(1); j++)
+				for (int j = 0; j < Matrix.GetLength(1); j++)
 				{
 					availabillityMap[i, j] = true;
 				}
@@ -76,16 +93,7 @@ namespace WordCheatTest
 				words = words.OrderByDescending(word => word.Length).ToList();
 			}
 		}
-		private void Search()
-		{
-			for(int i = 0; i < matrix.GetLength(0); i++)
-			{
-				for(int j = 0; j < matrix.GetLength(1); j++)
-				{
-					Search(i, j);
-				}
-			}
-		}
+		
 
 		private void Search(int x, int y, string word = "")
 		{
@@ -94,7 +102,7 @@ namespace WordCheatTest
 				return;
 			}
 
-			word += matrix[x, y];
+			word += Matrix[x, y];
 			availabillityMap[x, y] = false;
 
 			if(IsWord(word))
